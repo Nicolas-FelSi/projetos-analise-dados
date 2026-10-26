@@ -1,0 +1,9 @@
+﻿produto_id,produto,categoria,preco_unitario
+P001,Cadeira,Móveis,180.0
+P002,Mesa,Móveis,420.0
+P003,Monitor,Eletrônicos,890.0
+P004,Teclado,Eletrônicos,120.0
+P005,Caderno,Papelaria,18.0
+P006,Caneta,Papelaria,4.5
+P007,Mochila,Acessórios,150.0
+P008,Fone,Eletrônicos,210.0

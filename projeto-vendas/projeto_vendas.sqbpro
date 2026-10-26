@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="projeto_vendas.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1137"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="clientes" custom_title="0" dock_id="1" table="4,8:mainclientes"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000012400ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">WITH vendas_unicas AS (
+	SELECT DISTINCT *
+	FROM vendas
+)
+
+SELECT
+	v.venda_id,
+	v.data_venda,
+	v.cliente_id,
+	c.cliente,
+	c.estado,
+	v.produto_id,
+	p.produto,
+	p.categoria,
+	CAST(v.quantidade AS INTEGER) AS quantidade,
+	v.preco_unitario,
+	v.desconto_pct,
+	v.forma_pagamento,
+	CAST(v.quantidade AS INTEGER) * v.preco_unitario AS valor_bruto
+FROM
+	vendas_unicas AS v
+LEFT JOIN clientes AS c ON v.cliente_id = c.cliente_id
+LEFT JOIN produtos as p ON v.produto_id = p.produto_id</sql><sql name="SQL 2*">WITH vendas_unicas AS (
+	SELECT DISTINCT *
+	FROM vendas
+)
+
+SELECT
+	COUNT(*) AS total_linhas,
+	COUNT(DISTINCT venda_id) AS vendas_distintas,
+	SUM(
+		CASE WHEN c.cliente_id IS NULL THEN 1 ELSE 0 END
+	) AS clientes_nao_encontrados,
+	SUM(
+		CASE WHEN p.produto_id IS NULL THEN 1 ELSE 0 END
+	) AS produtos_nao_encontrados
+FROM vendas_unicas as v
+LEFT JOIN clientes AS c ON v.cliente_id = c.cliente_id
+LEFT JOIN produtos AS p ON v.produto_id = p.produto_id</sql><sql name="SQL 3*">SELECT venda_id, COUNT(*) AS contagem
+FROM vendas
+GROUP BY venda_id 
+HAVING COUNT(*) &gt; 1
+</sql><sql name="SQL 4*">SELECT * FROM vendas
+WHERE venda_id IN (
+	SELECT venda_id
+	FROM vendas
+	GROUP BY venda_id
+	HAVING count(*) &gt; 1
+)</sql><current_tab id="0"/></tab_sql></sqlb_project>
